@@ -1,0 +1,78 @@
+body {
+  background-image: url("../images/crystalbackground.jpeg");
+  font-family: Arial, "Helvetica Neue", Helvetica, sans-serif;
+  line-height: 34px;
+
+}
+
+header {
+  font-size: 30px;
+  font: bold;
+  color: white;
+  background-color: darkorange;
+  padding: 20px;
+  width: 250px;
+  margin: 10px;
+}
+
+.instruct {
+  font-size: 18px;
+  color: green;
+  background-color: whitesmoke;
+  padding: 20px;
+  width: 500px;
+  line-height: 2em;
+  margin: 10px;
+}
+
+.instruct p {
+  margin-top: 16px;
+}
+
+#random-num {
+  font-size: 30px;
+  color: black;
+  background-color: mediumseagreen;
+  padding: 20px;
+  width: 200px;
+  line-height: 2em;
+  float: left;
+  margin: 10px;
+  height: 110px;
+}
+
+.win-loss {
+  font-size: 18px;
+  color: white;
+  background-color: purple;
+  padding: 20px;
+  width: 100px;
+  line-height: 2em;
+  float: left;
+  margin: 10px;
+  height: 110px;
+}
+
+button {
+
+}
+
+.crystal {
+  clear: both;
+  margin: 10px;
+}
+
+.score {
+  font-size: 18px;
+  color: white;
+  background-color: forestgreen;
+  padding: 20px;
+  width: 200px;
+  line-height: 2em;
+  margin: 10px;
+}
+
+#total-score {
+  font-size: 30px;
+  color: white;
+}
