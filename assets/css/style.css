@@ -29,7 +29,7 @@ header {
   margin-top: 16px;
 }
 
-#random-num {
+#random-num-text {
   font-size: 30px;
   color: black;
   background-color: mediumseagreen;
@@ -41,7 +41,7 @@ header {
   height: 110px;
 }
 
-.win-loss {
+.win-loss-text {
   font-size: 18px;
   color: white;
   background-color: purple;
@@ -72,7 +72,7 @@ button {
   margin: 10px;
 }
 
-#total-score {
+#total-score-text {
   font-size: 30px;
   color: white;
 }
