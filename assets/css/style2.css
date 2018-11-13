@@ -23,3 +23,47 @@ header {
   margin: 10px;
   -webkit-text-stroke: 1px darkcyan;
 }
+
+.chars-btn{
+  position: relative;
+  left: 0;
+  top: 0;
+  width: 220px;
+  height: 140px;
+  background-size: cover;
+  border: solid 20px white;
+  margin-bottom: 20px;
+  color: black;
+}
+
+#han-btn {
+  background-image: url("../images/hansolo.jpg");
+}
+
+#yoda-btn {
+  background-image: url("../images/yoda.jpg");
+}
+
+#palpatine-btn {
+  background-image: url("../images/emperorpalpatine.jpg");
+}
+
+#vader-btn {
+  background-image: url("../images/darthvader.jpg");
+}
+
+#han-name, #han-hp, #yoda-name, #yoda-hp, #palpatine-name, #palpatine-hp, #vader-name, #vader-hp {
+  position: absolute;
+  left: 0;
+  right: 0;
+  margin: auto;
+  font-size: 18px;
+}
+
+#han-name, #yoda-name, #palpatine-name, #vader-name {
+  top: -20px;
+}
+
+#han-hp, #yoda-hp, #palpatine-hp, #vader-hp {
+  bottom: -20px;
+}
