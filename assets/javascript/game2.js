@@ -129,8 +129,9 @@ $(document).ready(function() {
   displayUpdate();
 
   // Event listener for button presses to select attacker
-  $(".start-disp > button").on("click", function() {
-
+  $(document).on("click", ".start-disp > button", function() {
+  // $(".start-disp > button").on("click", function() {
+    console.log($(this).attr("id"));
     // If attacker not selected and character button pressed
     if (!attackerSelected) {
       switch($(this).attr("id")) {
@@ -260,7 +261,8 @@ $(document).ready(function() {
   
   // Event listener for button presses to select defender
   $(document).on("click", ".enemies-disp > button", function() {
-    console.log($(this).attr("id"));
+    // console.log($(this).attr("id"));
+
     // If attacker selected but defender not selected and character button pressed
     if (attackerSelected && !defenderSelected) {
 
@@ -338,7 +340,7 @@ $(document).ready(function() {
 
   // Event listener for attack button
   $("#attack-btn").on("click", function() {
-
+    
     // If no enemy selected and press attack button
     if (attackerSelected && !defenderSelected && defeatedEnemies < 3 && !defeatedFlag) {
       
