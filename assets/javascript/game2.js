@@ -16,7 +16,7 @@ $(document).ready(function() {
     return attackPoints;
   };
   Character.prototype.calcCAP = function() {
-    var counterAttackPoints = Math.ceil(Math.random() * 10); // Counter attack points 1-50
+    var counterAttackPoints = Math.ceil(Math.random() * 50); // Counter attack points 1-50
     return counterAttackPoints;
   };
 
