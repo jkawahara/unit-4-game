@@ -36,7 +36,8 @@ header {
   height: 140px;
   background-size: cover;
   border: solid 20px white;
-  margin-right: 20px;
+  margin-right: 10px;
+  margin-bottom: 10px;
   color: black;
 }
 
@@ -74,6 +75,7 @@ header {
 
 #result-disp {
   font-size: 28px;
-  color: red;
+  color: blue;
   font: bolder;
+  -webkit-text-stroke: 1px blue;
 }

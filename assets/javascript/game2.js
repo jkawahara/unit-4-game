@@ -39,6 +39,7 @@ $(document).ready(function() {
   var attackerSelected = false;
   var defenderSelected = false;
   var defeatedFlag = false;
+  var wonFlag = false;
   var defeatedEnemies = 0;
 
 
@@ -50,8 +51,10 @@ $(document).ready(function() {
   function displayUpdate() {
 
     // Update positioning of characters: attacker, enemies and defender
-    if (!attackerSelected) {
+    if (wonFlag) {
       // Move characters to top of display (default position)
+      $(".attacker-disp > button").attr({class: "remove-disp", id: "remove-disp"});
+      // $(".start-disp > button").attr({class: "chars-btns", id: "char1-btn"});
 
     } else if (attackerSelected && !defenderSelected) {
       // Remove characters from top of display
@@ -67,6 +70,9 @@ $(document).ready(function() {
 
   // Restart game function
   function restartGame() {
+
+    // Reset character position if game over
+    displayUpdate();
 
     // Reset character attributes
     char1HP = char1.calcHP();
@@ -88,6 +94,7 @@ $(document).ready(function() {
     defenderSelected = false;
     defeatedEnemies = 0;
     defeatedFlag = false;
+    wonFlag = false;
 
     // Update character name and attributes
     $("#char1-name").text(char1.name);
@@ -101,7 +108,6 @@ $(document).ready(function() {
 
     $("#result-disp > p").remove();
     $("#result-disp > button").remove();
-
   }
 
   // MAIN CONTROLLER
@@ -325,12 +331,14 @@ $(document).ready(function() {
   // Event listener for attack button
   $("#attack-btn").on("click", function() {
 
+    // If no enemy selected and press attack button
     if (attackerSelected && !defenderSelected && defeatedEnemies < 3 && !defeatedFlag) {
       
       $("#result-disp > p").remove();
       $("#result-disp").append("<p>No enemy here.</p>");
       
-    } else if (attackerSelected && defenderSelected && !defeatedFlag && defeatedEnemies < 3) {
+    // If fight, adjust attributes
+    } else if (attackerSelected && defenderSelected && defeatedEnemies < 3 && !defeatedFlag) {
       $("#result-disp > p").remove();
 
       defendChar[1] -= attackChar[2]; // Attacker hits defender
@@ -361,6 +369,7 @@ $(document).ready(function() {
       //     break;
     }
 
+    // If defender health points <= 0 or less
     if (attackerSelected && defenderSelected && defendChar[1] <= 0 && defeatedEnemies < 3 && !defeatedFlag) {
       defenderSelected = false;
       defeatedEnemies++;
@@ -371,7 +380,9 @@ $(document).ready(function() {
       $("#result-disp > p").remove();
 
       $("#result-disp").append("<p>You have defeated " + defendChar[0] + ", you can choose to fight another enemy.</p>");
-    } else if (attackerSelected && defenderSelected && attackChar[1] <= 0 && !defeatedFlag) {
+    
+    // If attacker health points <= 0 and defender health points > 0
+    } else if (attackerSelected && defenderSelected && attackChar[1] <= 0 && defendChar > 0 && !defeatedFlag) {
       $("#result-disp > p").remove();
       $("#result-disp").append("<p>You have been defeated...GAME OVER!!!</p>");
       $("#result-disp").append("<button class='restart-btn'>Restart</button");
@@ -379,17 +390,18 @@ $(document).ready(function() {
       console.log(defeatedFlag);
     }
     
-    if (attackerSelected && defeatedEnemies === 3 && !defeatedFlag) {
+    // If all enemies are defeated
+    if (attackerSelected && defeatedEnemies === 3 && !defeatedFlag && !wonFlag) {
       $("#result-disp > p").remove();
       $("#result-disp").append("<p>You Won!!!! GAME OVER!!!</p>");
       $("#result-disp").append("<button class='restart-btn'>Restart</button");
-      restartGame();
+      wonFlag = true;
     }
   });
 
   // Event listener for restart button
   $(document).on("click", "#result-disp > button", function() {
-    // console.log($(this).attr("class"));
-
+    console.log($(this).attr("class"));
+    restartGame();
   });
 });
