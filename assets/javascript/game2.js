@@ -53,8 +53,22 @@ $(document).ready(function() {
     // Update positioning of characters: attacker, enemies and defender
     if (wonFlag) {
       // Move characters to top of display (default position)
-      $(".attacker-disp > button").attr({class: "remove-disp", id: "remove-disp"});
+      $(".attacker-disp > .chars-btns").remove();
       // $(".start-disp > button").attr({class: "chars-btns", id: "char1-btn"});
+      $(".start-disp > .remove-disp").remove();
+      $(".start-disp").append("<button class='chars-btns' id='char1-btn'></button>");
+      $(".start-disp").append("<button class='chars-btns' id='char2-btn'></button>");
+      $(".start-disp").append("<button class='chars-btns' id='char3-btn'></button>");
+      $(".start-disp").append("<button class='chars-btns' id='char4-btn'></button>");
+      $(".start-disp > #char1-btn").append("<p id='char1-name'></p>");
+      $(".start-disp > #char1-btn").append("<p id='char1-hp'></p>");
+      $(".start-disp > #char2-btn").append("<p id='char2-name'></p>");
+      $(".start-disp > #char2-btn").append("<p id='char2-hp'></p>");
+      $(".start-disp > #char3-btn").append("<p id='char3-name'></p>");
+      $(".start-disp > #char3-btn").append("<p id='char3-hp'></p>");
+      $(".start-disp > #char4-btn").append("<p id='char4-name'></p>");
+      $(".start-disp > #char4-btn").append("<p id='char4-hp'></p>");
+      
 
     } else if (attackerSelected && !defenderSelected) {
       // Remove characters from top of display
@@ -113,12 +127,6 @@ $(document).ready(function() {
   // MAIN CONTROLLER
   restartGame();
   displayUpdate();
-
-  // Debugging logs
-  console.log(char1.name + "-" + char1HP + "-" + char1AP + "-" + char1CAP);
-  console.log(char2.name + "-" + char2HP + "-" + char2AP + "-" + char2CAP);
-  console.log(char3.name + "-" + char3HP + "-" + char3AP + "-" + char3CAP);
-  console.log(char4.name + "-" + char4HP + "-" + char4AP + "-" + char4CAP);
 
   // Event listener for button presses to select attacker
   $(".start-disp > button").on("click", function() {
