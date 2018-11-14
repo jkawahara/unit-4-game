@@ -12,11 +12,11 @@ $(document).ready(function() {
     return healthPoints;
   };
   Character.prototype.calcAP = function() {
-    var attackPoints = Math.ceil(Math.random() * 25); // Attack points 1-25
+    var attackPoints = Math.ceil(Math.random() * 20); // Attack points 1-20
     return attackPoints;
   };
   Character.prototype.calcCAP = function() {
-    var counterAttackPoints = Math.ceil(Math.random() * 50); // Counter attack points 1-50
+    var counterAttackPoints = Math.ceil(Math.random() * 10); // Counter attack points 1-50
     return counterAttackPoints;
   };
 
@@ -38,6 +38,8 @@ $(document).ready(function() {
   var defendChar = [];
   var attackerSelected = false;
   var defenderSelected = false;
+  var defeatedFlag = false;
+  var defeatedEnemies = 0;
 
 
   // FUNCTIONS
@@ -84,6 +86,7 @@ $(document).ready(function() {
     enemyChars = [];
     attackerSelected = false;
     defenderSelected = false;
+    defeatedEnemies = 0;
 
     // Update character name and attributes
     $("#char1-name").text(char1.name);
@@ -94,6 +97,9 @@ $(document).ready(function() {
     $("#char3-hp").text(char3HP);
     $("#char4-name").text(char4.name);
     $("#char4-hp").text(char4HP);
+
+    $("#result-disp > p").remove();
+    $("#result-disp > button").remove();
 
   }
 
@@ -239,14 +245,15 @@ $(document).ready(function() {
   
   // Event listener for button presses to select defender
   $(document).on("click", ".enemies-disp > button", function() {
-    
+    console.log($(this).attr("id"));
     // If attacker selected but defender not selected and character button pressed
     if (attackerSelected && !defenderSelected) {
 
       switch($(this).attr("id")) {
         case "char1-btn":
           if (attackChar !== char1) {
-            defendChar = [char1.name, char1HP, char1AP, char1CAP];
+            defendChar = [char1.name, char1HP, char1AP, char1CAP, "char1-hp"];
+            enemyChars = [char2, char3, char4]
            
             // Position defender
             $(".defender-disp").append("<button class='chars-btns' id='char1-btn'></button");
@@ -263,7 +270,7 @@ $(document).ready(function() {
 
         case "char2-btn":
           if (attackChar !== char2) {
-            defendChar = [char2.name, char2HP, char2AP, char2CAP];
+            defendChar = [char2.name, char2HP, char2AP, char2CAP, "char2-hp"];
 
             // Position defender
             $(".defender-disp").append("<button class='chars-btns' id='char2-btn'></button");
@@ -279,7 +286,7 @@ $(document).ready(function() {
 
         case "char3-btn":
           if (attackChar !== char3) {
-            defendChar = [char3.name, char3HP, char3AP, char3CAP];
+            defendChar = [char3.name, char3HP, char3AP, char3CAP, "char3-hp"];
 
             // Position defender
             $(".defender-disp").append("<button class='chars-btns' id='char3-btn'></button");
@@ -295,7 +302,7 @@ $(document).ready(function() {
 
         case "char4-btn":
           if (attackChar !== char4) {
-            defendChar = [char4.name, char4HP, char4AP, char4CAP];;
+            defendChar = [char4.name, char4HP, char4AP, char4CAP, "char4-hp"];;
 
             // Position defender
             $(".defender-disp").append("<button class='chars-btns' id='char4-btn'></button");
@@ -316,16 +323,14 @@ $(document).ready(function() {
 
   // Event listener for attack button
   $("#attack-btn").on("click", function() {
-    console.log($(this).attr("id"));
 
-
-    console.log(baseAP);
-    
     if (attackerSelected && !defenderSelected) {
       
       $("#result-disp > p").remove();
       $("#result-disp").append("<p>No enemy here.</p>");
-    } else if (attackerSelected && defenderSelected) {
+    } else if (attackerSelected && defenderSelected && !defeatedFlag && defeatedEnemies < 3) {
+      $("#result-disp > p").remove();
+
       defendChar[1] -= attackChar[2]; // Attacker hits defender
       attackChar[2] += baseAP; // Attacker increases attack power by base attack power
       attackChar[1] -= defendChar[3]; // Defender hits attacker
@@ -334,22 +339,52 @@ $(document).ready(function() {
       $("#result-disp").append("<p>You attacked " + defendChar[0] + " for " + attackChar[2] + " damage.</p>");
       $("#result-disp").append("<p>" + defendChar[0] + " attacked you back for " + defendChar[3] + " damage.</p>");
 
+      switch (defendChar[0]) {
+        case char1.name:
+          $("#char1-hp").text(defendChar[1]);
+          break;
 
-      console.log(defendChar[1]);
-      console.log(attackChar[1]);
-      console.log(attackChar[2]);
+        case char2.name:
+          $("#char2-hp").text(defendChar[1]);
+          break;
 
-      if (defendChar[1] <= 0) {
+        case char3.name:
+          $("#char3-hp").text(defendChar[1]);
+          break;
+
+        case char4.name:
+          $("#char4-hp").text(defendChar[1]);
+          break;
+      }
+
+      if (defeatedEnemies === 3) {
+        $("#result-disp > p").remove();
+        $("#result-disp").append("<p>You Won!!!! GAME OVER!!!</p>");
+        $("#result-disp").append("<button class='restart-btn'>Restart</button");
+        restartGame();
+
+      }  else if (defendChar[1] <= 0 && defeatedEnemies < 3) {
+        console.log(defendChar[1]);
         defenderSelected = false;
+        defeatedEnemies++;
+        console.log(defeatedEnemies);
+
         $(".defender-disp > button").remove();
+        $("#result-disp > p").remove();
   
         $("#result-disp").append("<p>You have defeated " + defendChar[0] + ", you can choose to fight another enemy.</p>");
       } else if (attackChar[1] <= 0) {
-        $("#result-disp").append("<p>You have been defeated...GAME OVER!!!</p>");      
+        $("#result-disp > p").remove();
+        $("#result-disp").append("<p>You have been defeated...GAME OVER!!!</p>");
+        $("#result-disp").append("<button class='restart-btn'>Restart</button");
+        defeatedFlag = true;
       }
     }
+  });
 
-    
+  // Event listener for restart button
+  $(document).on("click", "#result-disp > button", function() {
+    console.log($(this).attr("class"));
 
   });
 });
