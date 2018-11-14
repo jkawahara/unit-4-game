@@ -16,7 +16,7 @@ $(document).ready(function() {
     return attackPoints;
   };
   Character.prototype.calcCAP = function() {
-    var counterAttackPoints = Math.ceil(Math.random() * 25); // Counter attack points 1-25
+    var counterAttackPoints = Math.ceil(Math.random() * 50); // Counter attack points 1-50
     return counterAttackPoints;
   };
 
@@ -30,6 +30,14 @@ $(document).ready(function() {
   var char1HP, char2HP, char3HP, char4HP;
   var char1AP, char2AP, char3AP, char4AP; 
   var char1CAP, char2CAP, char3CAP, char4CAP;
+  var baseAP;
+
+  // Declare flags
+  var attackChar = [];
+  var enemyChars = [];
+  var defendChar = [];
+  var attackerSelected = false;
+  var defenderSelected = false;
 
 
   // FUNCTIONS
@@ -38,18 +46,27 @@ $(document).ready(function() {
 
   // Update dispaly function
   function displayUpdate() {
-    $("#han-name").text(char1.name);
-    $("#han-hp").text(char1HP);
-    $("#yoda-name").text(char2.name);
-    $("#yoda-hp").text(char2HP);
-    $("#palpatine-name").text(char3.name);
-    $("#palpatine-hp").text(char3HP);
-    $("#vader-name").text(char4.name);
-    $("#vader-hp").text(char4HP);
+
+    // Update positioning of characters: attacker, enemies and defender
+    if (!attackerSelected) {
+      // Move characters to top of display (default position)
+
+    } else if (attackerSelected && !defenderSelected) {
+      // Remove characters from top of display
+      $(".start-disp > button").attr({class: "remove-disp", id: "remove-disp"});
+
+    } else if (attackerSelected && defenderSelected) {
+      // Remove defender from enemies position 
+      // $(".enemies-disp > button").attr
+
+    }
+
   }
 
   // Restart game function
   function restartGame() {
+
+    // Reset character attributes
     char1HP = char1.calcHP();
     char2HP = char2.calcHP();
     char3HP = char3.calcHP();
@@ -63,23 +80,276 @@ $(document).ready(function() {
     char2CAP = char2.calcCAP();
     char3CAP = char3.calcCAP();
     char4CAP = char4.calcCAP();
+    attackChar = "";
+    enemyChars = [];
+    attackerSelected = false;
+    defenderSelected = false;
+
+    // Update character name and attributes
+    $("#char1-name").text(char1.name);
+    $("#char1-hp").text(char1HP);
+    $("#char2-name").text(char2.name);
+    $("#char2-hp").text(char2HP);
+    $("#char3-name").text(char3.name);
+    $("#char3-hp").text(char3HP);
+    $("#char4-name").text(char4.name);
+    $("#char4-hp").text(char4HP);
 
   }
 
   // MAIN CONTROLLER
   restartGame();
+  displayUpdate();
+
+  // Debugging logs
   console.log(char1.name + "-" + char1HP + "-" + char1AP + "-" + char1CAP);
   console.log(char2.name + "-" + char2HP + "-" + char2AP + "-" + char2CAP);
   console.log(char3.name + "-" + char3HP + "-" + char3AP + "-" + char3CAP);
   console.log(char4.name + "-" + char4HP + "-" + char4AP + "-" + char4CAP);
 
-  displayUpdate();
+  // Event listener for button presses to select attacker
+  $(".start-disp > button").on("click", function() {
 
+    // If attacker not selected and character button pressed
+    if (!attackerSelected) {
+      switch($(this).attr("id")) {
+        
+        // If character 1 selected as attacker
+        case "char1-btn":
+          attackChar = [char1.name, char1HP, char1AP, char1CAP];
+          enemyChars = [char2, char3, char4];
+          
+          // Position attacker
+          $(".attacker-disp").append("<button class='chars-btns' id='char1-btn'></button");
+          $(".attacker-disp > #char1-btn").append("<p id='char1-name'></p>");
+          $(".attacker-disp > #char1-btn").append("<p id='char1-hp'></p>");
+          $(".chars-btns > #char1-name").text(char1.name);
+          $(".chars-btns > #char1-hp").text(char1HP);
 
+          // Position enemies
+          $(".enemies-disp").append("<button class='chars-btns' id='char2-btn'></button");
+          $(".enemies-disp > #char2-btn").append("<p id='char2-name'></p>");
+          $(".enemies-disp > #char2-btn").append("<p id='char2-hp'></p>");
+          $(".chars-btns > #char2-name").text(char2.name);
+          $(".chars-btns > #char2-hp").text(char2HP);
+          $(".enemies-disp").append("<button class='chars-btns' id='char3-btn'></button");
+          $(".enemies-disp > #char3-btn").append("<p id='char3-name'></p>");
+          $(".enemies-disp > #char3-btn").append("<p id='char3-hp'></p>");
+          $(".chars-btns > #char3-name").text(char3.name);
+          $(".chars-btns > #char3-hp").text(char3HP);
+          $(".enemies-disp").append("<button class='chars-btns' id='char4-btn'></button");
+          $(".enemies-disp > #char4-btn").append("<p id='char4-name'></p>");
+          $(".enemies-disp > #char4-btn").append("<p id='char4-hp'></p>");
+          $(".chars-btns > #char4-name").text(char4.name);
+          $(".chars-btns > #char4-hp").text(char4HP);
+          break;
 
-  // Event listener
-  $("#attack-btn").on("click", function() {
-    console.log($(this).attr("hp"));
+        // If character 2 selected as attacker
+        case "char2-btn":
+          attackChar = [char2.name, char2HP, char2AP, char2CAP];
+          enemyChars = [char1, char3, char4];
+
+          // Position attacker
+          $(".attacker-disp").append("<button class='chars-btns' id='char2-btn'></button");
+          $(".attacker-disp > #char2-btn").append("<p id='char2-name'></p>");
+          $(".attacker-disp > #char2-btn").append("<p id='char2-hp'></p>");
+          $(".chars-btns > #char2-name").text(char2.name);
+          $(".chars-btns > #char2-hp").text(char2HP);
+          // Position enemies
+          $(".enemies-disp").append("<button class='chars-btns' id='char1-btn'></button");
+          $(".enemies-disp > #char1-btn").append("<p id='char1-name'></p>");
+          $(".enemies-disp > #char1-btn").append("<p id='char1-hp'></p>");
+          $(".chars-btns > #char1-name").text(char1.name);
+          $(".chars-btns > #char1-hp").text(char1HP);
+          $(".enemies-disp").append("<button class='chars-btns' id='char3-btn'></button");
+          $(".enemies-disp > #char3-btn").append("<p id='char3-name'></p>");
+          $(".enemies-disp > #char3-btn").append("<p id='char3-hp'></p>");
+          $(".chars-btns > #char3-name").text(char3.name);
+          $(".chars-btns > #char3-hp").text(char3HP);
+          $(".enemies-disp").append("<button class='chars-btns' id='char4-btn'></button");
+          $(".enemies-disp > #char4-btn").append("<p id='char4-name'></p>");
+          $(".enemies-disp > #char4-btn").append("<p id='char4-hp'></p>");
+          $(".chars-btns > #char4-name").text(char4.name);
+          $(".chars-btns > #char4-hp").text(char4HP);
+          break;
+
+        // If character 3 selected as attacker
+        case "char3-btn":
+          attackChar = [char3.name, char3HP, char3AP, char3CAP];
+          enemyChars = [char1, char2, char4];
+
+          // Position attacker
+          $(".attacker-disp").append("<button class='chars-btns' id='char3-btn'></button");
+          $(".attacker-disp > #char3-btn").append("<p id='char3-name'></p>");
+          $(".attacker-disp > #char3-btn").append("<p id='char3-hp'></p>");
+          $(".chars-btns > #char3-name").text(char3.name);
+          $(".chars-btns > #char3-hp").text(char3HP);
+          // Position enemies
+          $(".enemies-disp").append("<button class='chars-btns' id='char1-btn'></button");
+          $(".enemies-disp > #char1-btn").append("<p id='char1-name'></p>");
+          $(".enemies-disp > #char1-btn").append("<p id='char1-hp'></p>");
+          $(".chars-btns > #char1-name").text(char1.name);
+          $(".chars-btns > #char1-hp").text(char1HP);
+          $(".enemies-disp").append("<button class='chars-btns' id='char2-btn'></button");
+          $(".enemies-disp > #char2-btn").append("<p id='char2-name'></p>");
+          $(".enemies-disp > #char2-btn").append("<p id='char2-hp'></p>");
+          $(".chars-btns > #char2-name").text(char2.name);
+          $(".chars-btns > #char2-hp").text(char2HP);
+          $(".enemies-disp").append("<button class='chars-btns' id='char4-btn'></button");
+          $(".enemies-disp > #char4-btn").append("<p id='char4-name'></p>");
+          $(".enemies-disp > #char4-btn").append("<p id='char4-hp'></p>");
+          $(".chars-btns > #char4-name").text(char4.name);
+          $(".chars-btns > #char4-hp").text(char4HP);
+          break;
+          
+        // If character 4 selected as attacker
+        case "char4-btn":
+          attackChar = [char4.name, char4HP, char4AP, char4CAP];
+          enemyChars = [char1, char2, char3];
+
+          // Position attacker
+          $(".attacker-disp").append("<button class='chars-btns' id='char4-btn'></button");
+          $(".attacker-disp > #char4-btn").append("<p id='char4-name'></p>");
+          $(".attacker-disp > #char4-btn").append("<p id='char4-hp'></p>");
+          $(".chars-btns > #char4-name").text(char4.name);
+          $(".chars-btns > #char4-hp").text(char4HP);
+          // Position enemies
+          $(".enemies-disp").append("<button class='chars-btns' id='char1-btn'></button");
+          $(".enemies-disp > #char1-btn").append("<p id='char1-name'></p>");
+          $(".enemies-disp > #char1-btn").append("<p id='char1-hp'></p>");
+          $(".chars-btns > #char1-name").text(char1.name);
+          $(".chars-btns > #char1-hp").text(char1HP);
+          $(".enemies-disp").append("<button class='chars-btns' id='char2-btn'></button");
+          $(".enemies-disp > #char2-btn").append("<p id='char2-name'></p>");
+          $(".enemies-disp > #char2-btn").append("<p id='char2-hp'></p>");
+          $(".chars-btns > #char2-name").text(char2.name);
+          $(".chars-btns > #char2-hp").text(char2HP);
+          $(".enemies-disp").append("<button class='chars-btns' id='char3-btn'></button");
+          $(".enemies-disp > #char3-btn").append("<p id='char3-name'></p>");
+          $(".enemies-disp > #char3-btn").append("<p id='char3-hp'></p>");
+          $(".chars-btns > #char3-name").text(char3.name);
+          $(".chars-btns > #char3-hp").text(char3HP);
+          break;
+      }
+      baseAP = attackChar[2];
+      attackerSelected = true;
+      displayUpdate();
+    }
+  });
+  
+  // Event listener for button presses to select defender
+  $(document).on("click", ".enemies-disp > button", function() {
+    
+    // If attacker selected but defender not selected and character button pressed
+    if (attackerSelected && !defenderSelected) {
+
+      switch($(this).attr("id")) {
+        case "char1-btn":
+          if (attackChar !== char1) {
+            defendChar = [char1.name, char1HP, char1AP, char1CAP];
+           
+            // Position defender
+            $(".defender-disp").append("<button class='chars-btns' id='char1-btn'></button");
+            $(".defender-disp > #char1-btn").append("<p id='char1-name'></p>");
+            $(".defender-disp > #char1-btn").append("<p id='char1-hp'></p>");
+            $(".chars-btns > #char1-name").text(char1.name);
+            $(".chars-btns > #char1-hp").text(char1HP);
+
+            // Remove defender from enemies
+            $(".enemies-disp > #char1-btn").attr({class: "remove-disp", id: "remove-disp"});
+
+          }
+          break;
+
+        case "char2-btn":
+          if (attackChar !== char2) {
+            defendChar = [char2.name, char2HP, char2AP, char2CAP];
+
+            // Position defender
+            $(".defender-disp").append("<button class='chars-btns' id='char2-btn'></button");
+            $(".defender-disp > #char2-btn").append("<p id='char2-name'></p>");
+            $(".defender-disp > #char2-btn").append("<p id='char2-hp'></p>");
+            $(".chars-btns > #char2-name").text(char2.name);
+            $(".chars-btns > #char2-hp").text(char2HP);
+
+            // Remove defender from enemies
+            $(".enemies-disp > #char2-btn").attr({class: "remove-disp", id: "remove-disp"});
+          }
+          break;
+
+        case "char3-btn":
+          if (attackChar !== char3) {
+            defendChar = [char3.name, char3HP, char3AP, char3CAP];
+
+            // Position defender
+            $(".defender-disp").append("<button class='chars-btns' id='char3-btn'></button");
+            $(".defender-disp > #char3-btn").append("<p id='char3-name'></p>");
+            $(".defender-disp > #char3-btn").append("<p id='char3-hp'></p>");
+            $(".chars-btns > #char3-name").text(char3.name);
+            $(".chars-btns > #char3-hp").text(char3HP);
+
+            // Remove defender from enemies
+            $(".enemies-disp > #char3-btn").attr({class: "remove-disp", id: "remove-disp"});
+          }
+          break;
+
+        case "char4-btn":
+          if (attackChar !== char4) {
+            defendChar = [char4.name, char4HP, char4AP, char4CAP];;
+
+            // Position defender
+            $(".defender-disp").append("<button class='chars-btns' id='char4-btn'></button");
+            $(".defender-disp > #char4-btn").append("<p id='char4-name'></p>");
+            $(".defender-disp > #char4-btn").append("<p id='char4-hp'></p>");
+            $(".chars-btns > #char4-name").text(char4.name);
+            $(".chars-btns > #char4-hp").text(char4HP);
+
+            // Remove defender from enemies
+            $(".enemies-disp > #char4-btn").attr({class: "remove-disp", id: "remove-disp"});
+          }
+          break;
+      }
+      defenderSelected = true;
+      displayUpdate();
+    }
   });
 
+  // Event listener for attack button
+  $("#attack-btn").on("click", function() {
+    console.log($(this).attr("id"));
+
+
+    console.log(baseAP);
+    
+    if (attackerSelected && !defenderSelected) {
+      
+      $("#result-disp > p").remove();
+      $("#result-disp").append("<p>No enemy here.</p>");
+    } else if (attackerSelected && defenderSelected) {
+      defendChar[1] -= attackChar[2]; // Attacker hits defender
+      attackChar[2] += baseAP; // Attacker increases attack power by base attack power
+      attackChar[1] -= defendChar[3]; // Defender hits attacker
+      
+      $("#result-disp > p").remove();
+      $("#result-disp").append("<p>You attacked " + defendChar[0] + " for " + attackChar[2] + " damage.</p>");
+      $("#result-disp").append("<p>" + defendChar[0] + " attacked you back for " + defendChar[3] + " damage.</p>");
+
+
+      console.log(defendChar[1]);
+      console.log(attackChar[1]);
+      console.log(attackChar[2]);
+
+      if (defendChar[1] <= 0) {
+        defenderSelected = false;
+        $(".defender-disp > button").remove();
+  
+        $("#result-disp").append("<p>You have defeated " + defendChar[0] + ", you can choose to fight another enemy.</p>");
+      } else if (attackChar[1] <= 0) {
+        $("#result-disp").append("<p>You have been defeated...GAME OVER!!!</p>");      
+      }
+    }
+
+    
+
+  });
 });
