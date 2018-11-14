@@ -87,6 +87,7 @@ $(document).ready(function() {
     attackerSelected = false;
     defenderSelected = false;
     defeatedEnemies = 0;
+    defeatedFlag = false;
 
     // Update character name and attributes
     $("#char1-name").text(char1.name);
@@ -324,10 +325,11 @@ $(document).ready(function() {
   // Event listener for attack button
   $("#attack-btn").on("click", function() {
 
-    if (attackerSelected && !defenderSelected) {
+    if (attackerSelected && !defenderSelected && defeatedEnemies < 3 && !defeatedFlag) {
       
       $("#result-disp > p").remove();
       $("#result-disp").append("<p>No enemy here.</p>");
+      
     } else if (attackerSelected && defenderSelected && !defeatedFlag && defeatedEnemies < 3) {
       $("#result-disp > p").remove();
 
@@ -339,52 +341,55 @@ $(document).ready(function() {
       $("#result-disp").append("<p>You attacked " + defendChar[0] + " for " + attackChar[2] + " damage.</p>");
       $("#result-disp").append("<p>" + defendChar[0] + " attacked you back for " + defendChar[3] + " damage.</p>");
 
-      switch (defendChar[0]) {
-        case char1.name:
-          $("#char1-hp").text(defendChar[1]);
-          break;
 
-        case char2.name:
-          $("#char2-hp").text(defendChar[1]);
-          break;
+      // Update character health points
+      // switch (defendChar[0]) {
+      //   case char1.name:
+      //     $("#char1-hp").text(defendChar[1]);
+      //     break;
 
-        case char3.name:
-          $("#char3-hp").text(defendChar[1]);
-          break;
+      //   case char2.name:
+      //     $("#char2-hp").text(defendChar[1]);
+      //     break;
 
-        case char4.name:
-          $("#char4-hp").text(defendChar[1]);
-          break;
-      }
+      //   case char3.name:
+      //     $("#char3-hp").text(defendChar[1]);
+      //     break;
 
-      if (defeatedEnemies === 3) {
-        $("#result-disp > p").remove();
-        $("#result-disp").append("<p>You Won!!!! GAME OVER!!!</p>");
-        $("#result-disp").append("<button class='restart-btn'>Restart</button");
-        restartGame();
+      //   case char4.name:
+      //     $("#char4-hp").text(defendChar[1]);
+      //     break;
+    }
 
-      }  else if (defendChar[1] <= 0 && defeatedEnemies < 3) {
-        console.log(defendChar[1]);
-        defenderSelected = false;
-        defeatedEnemies++;
-        console.log(defeatedEnemies);
+    if (attackerSelected && defenderSelected && defendChar[1] <= 0 && defeatedEnemies < 3 && !defeatedFlag) {
+      defenderSelected = false;
+      defeatedEnemies++;
+      console.log(defeatedEnemies);
+      console.log(defenderSelected);
 
-        $(".defender-disp > button").remove();
-        $("#result-disp > p").remove();
-  
-        $("#result-disp").append("<p>You have defeated " + defendChar[0] + ", you can choose to fight another enemy.</p>");
-      } else if (attackChar[1] <= 0) {
-        $("#result-disp > p").remove();
-        $("#result-disp").append("<p>You have been defeated...GAME OVER!!!</p>");
-        $("#result-disp").append("<button class='restart-btn'>Restart</button");
-        defeatedFlag = true;
-      }
+      $(".defender-disp > button").remove();
+      $("#result-disp > p").remove();
+
+      $("#result-disp").append("<p>You have defeated " + defendChar[0] + ", you can choose to fight another enemy.</p>");
+    } else if (attackerSelected && defenderSelected && attackChar[1] <= 0 && !defeatedFlag) {
+      $("#result-disp > p").remove();
+      $("#result-disp").append("<p>You have been defeated...GAME OVER!!!</p>");
+      $("#result-disp").append("<button class='restart-btn'>Restart</button");
+      defeatedFlag = true;
+      console.log(defeatedFlag);
+    }
+    
+    if (attackerSelected && defeatedEnemies === 3 && !defeatedFlag) {
+      $("#result-disp > p").remove();
+      $("#result-disp").append("<p>You Won!!!! GAME OVER!!!</p>");
+      $("#result-disp").append("<button class='restart-btn'>Restart</button");
+      restartGame();
     }
   });
 
   // Event listener for restart button
   $(document).on("click", "#result-disp > button", function() {
-    console.log($(this).attr("class"));
+    // console.log($(this).attr("class"));
 
   });
 });
