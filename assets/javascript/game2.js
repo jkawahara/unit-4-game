@@ -21,41 +21,54 @@ $(document).ready(function() {
   };
 
   // Generate character objects using Character constructor
-  var char1 = new Character("Han Solo");
-  var char2 = new Character("Yoda");
-  var char3 = new Character("Emperor Palpatine");
-  var char4 = new Character("Darth Vader");
+  var chars = []; // Declare array for 4 characters
+  chars[0] = new Character("Han Solo");
+  chars[1] = new Character("Yoda");
+  chars[2] = new Character("Emperor Palpatine");
+  chars[3] = new Character("Darth Vader");
 
   // Declare health, attack and counterattack points
-  var char1HP, char2HP, char3HP, char4HP;
-  var char1AP, char2AP, char3AP, char4AP; 
-  var char1CAP, char2CAP, char3CAP, char4CAP;
+  // var char1HP, char2HP, char3HP, char4HP;
+  // var char1AP, char2AP, char3AP, char4AP; 
+  // var char1CAP, char2CAP, char3CAP, char4CAP;
   var baseAP;
 
   // Declare flags
-  var attackChar = [];
-  var enemyChars = [];
-  var defendChar = [];
-  var attackerSelected = false;
-  var defenderSelected = false;
-  var defeatedFlag = false;
-  var wonFlag = false;
-  var defeatedEnemies = 0;
+  // var attackChar = [];
+  // var enemyChars = [];
+  // var defendChar = [];
+  // var attackerSelected = false;
+  // var defenderSelected = false;
+  // var defeatedFlag = false;
+  // var wonFlag = false;
+  // var defeatedEnemies = 0;
 
 
   // FUNCTIONS
   // =========
 
+  // Render start display
+  function displayStart() {
+    // Position characters in start section
+    $(".attacker-section, .enemies-section, .defender-section, .result-section, .restart-section").empty();
+    $(".attacker-section").append("<p>Your Character</p>")
+    $(".enemies-section").append("<p>Enemies Available to Attack</p>")
+    $(".defender-section").append("<p>Defender</p>")
+    for (var i = 0; i < chars.length; i++) {
+      $(".chars-section").append(`<button class="chars-btns" id="char${i + 1}-btn"></button>`);
+      $(`#char${i + 1}-btn`).append(`<p id="char${i + 1}-name">${chars[i].name}</p>`);
+      $(`#char${i + 1}-btn`).append(`<p id="char${i + 1}-hp">${chars[i].healthPoints}</p>`);
+    }
 
-  // Update dispaly function
+  }
+
+  // Update display function
   function displayUpdate() {
 
     // Update positioning of characters: attacker, enemies and defender
     if (wonFlag) {
       // Move characters to top of display (default position)
-      $(".attacker-disp > .chars-btns").remove();
-      // $(".start-disp > button").attr({class: "chars-btns", id: "char1-btn"});
-      $(".start-disp > .remove-disp").remove();
+      $(".attacker-disp > .chars-btns, .start-disp > .remove-disp").remove();
       $(".start-disp").append("<button class='chars-btns' id='char1-btn'></button>");
       $(".start-disp").append("<button class='chars-btns' id='char2-btn'></button>");
       $(".start-disp").append("<button class='chars-btns' id='char3-btn'></button>");
@@ -83,55 +96,47 @@ $(document).ready(function() {
   }
 
   // Restart game function
-  function restartGame() {
+  function startGame() {
+    // Create character attributes
+    for (var i = 0; i < chars.length; i++) {
+      chars[i].healthPoints = chars[i].calcHP();
+      chars[i].attackPoints = chars[i].calcAP();
+      // Check attack and counter attack points aren't the same
+      do {
+        chars[i].counterAttackPoints = chars[i].calcCAP();
+      }
+      while (chars[i].attackPoints === chars[i].counterAttackPoints);
+    }
 
-    // Reset character position if game over
-    displayUpdate();
+    // attackChar = "";
+    // enemyChars = [];
+    // attackerSelected = false;
+    // defenderSelected = false;
+    // defeatedEnemies = 0;
+    // defeatedFlag = false;
+    // wonFlag = false;
 
-    // Reset character attributes
-    char1HP = char1.calcHP();
-    char2HP = char2.calcHP();
-    char3HP = char3.calcHP();
-    char4HP = char4.calcHP();
-    char1AP = char1.calcAP();
-    char2AP = char2.calcAP();
-    char3AP = char3.calcAP();
-    char4AP = char4.calcAP();
-    // Check attack and counter attack points aren't the same
-    char1CAP = char1.calcCAP();
-    char2CAP = char2.calcCAP();
-    char3CAP = char3.calcCAP();
-    char4CAP = char4.calcCAP();
-    attackChar = "";
-    enemyChars = [];
-    attackerSelected = false;
-    defenderSelected = false;
-    defeatedEnemies = 0;
-    defeatedFlag = false;
-    wonFlag = false;
+    // // Update character name and attributes
+    // $("#char1-name").text(char1.name);
+    // $("#char1-hp").text(char1HP);
+    // $("#char2-name").text(char2.name);
+    // $("#char2-hp").text(char2HP);
+    // $("#char3-name").text(char3.name);
+    // $("#char3-hp").text(char3HP);
+    // $("#char4-name").text(char4.name);
+    // $("#char4-hp").text(char4HP);
 
-    // Update character name and attributes
-    $("#char1-name").text(char1.name);
-    $("#char1-hp").text(char1HP);
-    $("#char2-name").text(char2.name);
-    $("#char2-hp").text(char2HP);
-    $("#char3-name").text(char3.name);
-    $("#char3-hp").text(char3HP);
-    $("#char4-name").text(char4.name);
-    $("#char4-hp").text(char4HP);
-
-    $("#result-disp > p").remove();
-    $("#result-disp > button").remove();
+    // $("#result-disp > p").remove();
+    // $("#result-disp > button").remove();
   }
 
   // MAIN CONTROLLER
-  restartGame();
-  displayUpdate();
+  startGame();
+  displayStart();
 
   // Event listener for button presses to select attacker
   $(document).on("click", ".start-disp > button", function() {
   // $(".start-disp > button").on("click", function() {
-    console.log($(this).attr("id"));
     // If attacker not selected and character button pressed
     if (!attackerSelected) {
       switch($(this).attr("id")) {
@@ -261,7 +266,6 @@ $(document).ready(function() {
   
   // Event listener for button presses to select defender
   $(document).on("click", ".enemies-disp > button", function() {
-    // console.log($(this).attr("id"));
 
     // If attacker selected but defender not selected and character button pressed
     if (attackerSelected && !defenderSelected) {
@@ -361,30 +365,36 @@ $(document).ready(function() {
 
 
       // Update character health points
-      // switch (defendChar[0]) {
-      //   case char1.name:
-      //     $("#char1-hp").text(defendChar[1]);
-      //     break;
-
-      //   case char2.name:
-      //     $("#char2-hp").text(defendChar[1]);
-      //     break;
-
-      //   case char3.name:
-      //     $("#char3-hp").text(defendChar[1]);
-      //     break;
-
-      //   case char4.name:
-      //     $("#char4-hp").text(defendChar[1]);
-      //     break;
+      if (attackerSelected && defenderSelected) {
+        switch (defendChar[0]) {
+          case char1.name:
+            $("#char1-hp").text(defendChar[1]);
+            $(".attacker-disp > #char1-hp").text(attackChar[1]);
+            break;
+  
+          case char2.name:
+            $("#char2-hp").text(defendChar[1]);
+            $(".attacker-disp > #char2-hp").text(attackChar[1]);
+            break;
+  
+          case char3.name:
+            $("#char3-btn > #char3-hp").text(defendChar[1]);
+            $(".chars-btns > p").append(attackChar[1]);
+            break;
+  
+          case char4.name:
+            $("#char4-hp").text(defendChar[1]);
+            $(".attacker-disp > #char4-hp").text(attackChar[1]);
+            break;
+        }
+      }
+      
     }
 
     // If defender health points <= 0 or less
     if (attackerSelected && defenderSelected && defendChar[1] <= 0 && defeatedEnemies < 3 && !defeatedFlag) {
       defenderSelected = false;
       defeatedEnemies++;
-      console.log(defeatedEnemies);
-      console.log(defenderSelected);
 
       $(".defender-disp > button").remove();
       $("#result-disp > p").remove();
@@ -397,7 +407,6 @@ $(document).ready(function() {
       $("#result-disp").append("<p>You have been defeated...GAME OVER!!!</p>");
       $("#result-disp").append("<button class='restart-btn'>Restart</button");
       defeatedFlag = true;
-      console.log(defeatedFlag);
     }
     
     // If all enemies are defeated
@@ -411,7 +420,6 @@ $(document).ready(function() {
 
   // Event listener for restart button
   $(document).on("click", "#result-disp > button", function() {
-    console.log($(this).attr("class"));
     restartGame();
   });
 });

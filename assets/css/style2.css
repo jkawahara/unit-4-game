@@ -16,7 +16,7 @@ header {
   -webkit-text-stroke: 1px darkcyan;
 }
 
-.game-disp {
+.main-game-section {
   font-size: 34px;
   font: bolder;
   color: black;
@@ -75,7 +75,6 @@ header {
 
 #result-disp {
   font-size: 28px;
-  color: blue;
-  font: bolder;
-  -webkit-text-stroke: 1px blue;
+  background-color: darkgray;
+  margin: 0 20px 20px 0;
 }
