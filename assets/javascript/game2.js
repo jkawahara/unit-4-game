@@ -16,7 +16,7 @@ $(document).ready(function() {
     return attackPower;
   };
   Character.prototype.calcCAP = function() {
-    var counterAttackPower = Math.ceil(Math.random() * 40); // Counter attack points 1-50
+    var counterAttackPower = Math.ceil(Math.random() * 50); // Counter attack points 1-50
     return counterAttackPower;
   };
 
@@ -144,13 +144,15 @@ $(document).ready(function() {
   // Listen for attack button press
   $("#attack-btn").on("click", function() {
     // If no enemy selected and press attack button
-    if (attackCharIndex === -1 || defendCharIndex === -1) {
+    if ((attackCharIndex === -1 || defendCharIndex === -1) && !wonFlag) {
       displayNoEnemy();
     
     // If attacker and defender selected then fight and adjust attributes
     } else if (attackCharIndex > -1 && defendCharIndex > -1 && defeatedEnemies < 3 && !defeatedFlag) {
       chars[defendCharIndex].healthPoints -= chars[attackCharIndex].attackPower; // Attacker hits defender
-      chars[attackCharIndex].healthPoints -= chars[defendCharIndex].counterAttackPower; // Defender hits attacker
+      if (chars[defendCharIndex].healthPoints > 0) {
+        chars[attackCharIndex].healthPoints -= chars[defendCharIndex].counterAttackPower; // Defender hits attacker
+      }
       displayFight();
       chars[attackCharIndex].attackPower += baseAP; // Attacker increases attack power by base attack power
     }

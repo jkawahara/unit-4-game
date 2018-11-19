@@ -72,5 +72,6 @@ header {
 .result-section {
   font-size: 28px;
   background-color: darkgray;
-  margin: 0 20px 20px 0;
+  margin: 20px 20px 20px 0;
+  width: 50%;
 }
