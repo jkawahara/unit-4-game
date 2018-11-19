@@ -12,12 +12,12 @@ $(document).ready(function() {
     return healthPoints;
   };
   Character.prototype.calcAP = function() {
-    var attackPoints = Math.ceil(Math.random() * 20); // Attack points 1-20
-    return attackPoints;
+    var attackPower = Math.ceil(Math.random() * 20); // Attack points 1-20
+    return attackPower;
   };
   Character.prototype.calcCAP = function() {
-    var counterAttackPoints = Math.ceil(Math.random() * 40); // Counter attack points 1-50
-    return counterAttackPoints;
+    var counterAttackPower = Math.ceil(Math.random() * 40); // Counter attack points 1-50
+    return counterAttackPower;
   };
 
   // Generate character objects using Character constructor
@@ -58,7 +58,7 @@ $(document).ready(function() {
     $(".attacker-section").append($(`.chars-section > #${$(this).attr("id")}`));
     $(".enemies-section").append($(".chars-section > button"));
     attackCharIndex = parseInt(this.id.charAt(4)) - 1;
-    baseAP = chars[attackCharIndex].attackPoints; // Set base attack points for attacker
+    baseAP = chars[attackCharIndex].attackPower; // Set base attack points for attacker
   }
 
   // Render defender display
@@ -82,11 +82,11 @@ $(document).ready(function() {
     $(".result-section").empty();
 
     // Attack message and update healthpoints
-    $(".result-section").append(`<p>You attacked ${chars[defendCharIndex].name} for ${chars[attackCharIndex].attackPoints} damage.</p>`);
+    $(".result-section").append(`<p>You attacked ${chars[defendCharIndex].name} for ${chars[attackCharIndex].attackPower} damage.</p>`);
     $(`#char${attackCharIndex + 1}-hp`).text(chars[attackCharIndex].healthPoints); 
 
     // Counter attack message and update healthpoints
-    $(".result-section").append(`<p>${chars[defendCharIndex].name} attacked you back for ${chars[defendCharIndex].counterAttackPoints} damage.</p>`);
+    $(".result-section").append(`<p>${chars[defendCharIndex].name} attacked you back for ${chars[defendCharIndex].counterAttackPower} damage.</p>`);
     $(`#char${defendCharIndex + 1}-hp`).text(chars[defendCharIndex].healthPoints); 
   }
 
@@ -115,12 +115,12 @@ $(document).ready(function() {
     // Create character attributes
     for (var i = 0; i < chars.length; i++) {
       chars[i].healthPoints = chars[i].calcHP();
-      chars[i].attackPoints = chars[i].calcAP();
+      chars[i].attackPower= chars[i].calcAP();
       // Check attack and counter attack points aren't the same
       do {
-        chars[i].counterAttackPoints = chars[i].calcCAP();
+        chars[i].counterAttackPower = chars[i].calcCAP();
       }
-      while (chars[i].attackPoints === chars[i].counterAttackPoints);
+      while (chars[i].attackPower === chars[i].counterAttackPower);
     }
 
     baseAP;
@@ -149,10 +149,10 @@ $(document).ready(function() {
     
     // If attacker and defender selected then fight and adjust attributes
     } else if (attackCharIndex > -1 && defendCharIndex > -1 && defeatedEnemies < 3 && !defeatedFlag) {
-      chars[defendCharIndex].healthPoints -= chars[attackCharIndex].attackPoints; // Attacker hits defender
-      chars[attackCharIndex].healthPoints -= chars[defendCharIndex].counterAttackPoints; // Defender hits attacker
+      chars[defendCharIndex].healthPoints -= chars[attackCharIndex].attackPower; // Attacker hits defender
+      chars[attackCharIndex].healthPoints -= chars[defendCharIndex].counterAttackPower; // Defender hits attacker
       displayFight();
-      chars[attackCharIndex].attackPoints += baseAP; // Attacker increases attack power by base attack power
+      chars[attackCharIndex].attackPower += baseAP; // Attacker increases attack power by base attack power
     }
 
     // If defender health points <= 0 or attacker health points <= 0
