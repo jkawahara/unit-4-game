@@ -1,73 +1,77 @@
 body {
-  background-image: url("../images/crystalbackground.jpeg");
+  background-image: url("../images/background.jpg");
+  background-size: cover;
+  background-repeat: no-repeat;
   font-family: Arial, "Helvetica Neue", Helvetica, sans-serif;
   line-height: 34px;
 }
 
 header {
-  font-size: 30px;
-  font: bold;
-  color: white;
-  background-color: darkorange;
-  padding: 20px;
-  width: 250px;
-  margin: 10px;
-}
-
-.instruct {
-  font-size: 18px;
-  color: green;
-  background-color: whitesmoke;
-  padding: 20px;
-  width: 500px;
-  line-height: 2em;
-  margin: 10px;
-}
-
-.instruct p {
-  margin-top: 16px;
-}
-
-#random-num-text {
-  font-size: 30px;
+  font-size: 60px;
+  font: bolder;
   color: black;
-  background-color: mediumseagreen;
-  padding: 20px;
-  width: 200px;
-  line-height: 2em;
-  float: left;
+  padding: 10px;
   margin: 10px;
-  height: 110px;
+  text-align: center;
+  -webkit-text-stroke: 1px darkcyan;
 }
 
-.win-loss-text {
+.main-game-section {
+  font-size: 34px;
+  font: bolder;
+  color: black;
+  padding-left: 20px;
+  -webkit-text-stroke: 1px darkcyan;
+}
+
+.chars-btns{
+  position: relative;
+  left: 0;
+  top: 0;
+  width: 220px;
+  height: 140px;
+  background-size: cover;
+  border: solid 20px white;
+  margin-right: 10px;
+  margin-bottom: 10px;
+  color: black;
+}
+
+#char1-btn {
+  background-image: url("../images/hansolo.jpg");
+}
+
+#char2-btn {
+  background-image: url("../images/yoda.jpg");
+}
+
+#char3-btn {
+  background-image: url("../images/emperorpalpatine.jpg");
+}
+
+#char4-btn {
+  background-image: url("../images/darthvader.jpg");
+}
+
+#char1-name, #char1-hp, #char2-name, #char2-hp, #char3-name, #char3-hp, #char4-name, #char4-hp {
+  position: absolute;
+  left: 0;
+  right: 0;
+  margin: auto;
   font-size: 18px;
-  color: white;
-  background-color: purple;
-  padding: 20px;
-  width: 100px;
-  line-height: 2em;
-  float: left;
-  margin: 10px;
-  height: 110px;
 }
 
-.crystal {
-  clear: both;
-  margin: 10px;
+#char1-name, #char2-name, #char3-name, #char4-name {
+  top: -20px;
 }
 
-.score {
-  font-size: 18px;
-  color: white;
-  background-color: forestgreen;
-  padding: 20px;
-  width: 200px;
-  line-height: 2em;
-  margin: 10px;
+#char1-hp, #char2-hp, #char3-hp, #char4-hp {
+  bottom: -20px;
 }
 
-#total-score-text {
-  font-size: 30px;
-  color: white;
+.result-section {
+  font-size: 28px;
+  background-color: darkgray;
+  margin: 20px 20px 20px 0;
+  width: 50%;
 }

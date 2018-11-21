@@ -2,7 +2,7 @@
 <html>
 <head>
   <meta charset="utf-8" />
-  <title>Star Wars RPG</title>
+  <title>CrystalsCollector</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
     
   <!-- Reset styling -->
@@ -14,40 +14,57 @@
 
 <body>
   <header>
-    <h1 class="title">Star Wars RPG!</h1>
+    <h1 class="title">CrystalsCollector!</h1>
   </header>
   
-  <section class="main-game-section">
-    <article class="chars-section"></article>
-
-    <article class="attacker-section">
-      <p>Your Character</p>
-    </article>
-
-    <article class="enemies-section">
-      <p>Enemies Available to Attack</p>
+  <section class="game">
+    <article class="instruct">
+      <p>You will be given a random number at the start of the game.</p>
+      <p>There are four crystals below. By clicking on a crystal, you will add a specific amount of points to your total score.</p>
+      <p>You win the game by matching your total score to the random number. You lose the game if your total score goes above the random number.</p>
+      <p>The value of each crystal is hidden from you until you click on it.</p>
+      <p>Each time when the game starts, the game will change the values of each crystal.</p>
     </article>
     
-
-    <article class="fight-section">
-      <p>Fight Section</p>
-      <button id="attack-btn">Attack</button>
+    <article id="random-num-text">39
+      
     </article>
     
-    <article class="defender-section">
-      <p>Defender</p>
+    <article class="win-loss-text">
+      <p id="won-lost-text"></p>
+      <p id="wins-text">Wins 0</p>
+      <p id="losses-text">Losses 0</p>
+    </article>    
+
+    <article class="crystal">
+      <button class="btn" id="crys1">
+        <img src="assets/images/blue.png">
+      </button>
+
+      <button class="btn" id="crys2">
+        <img src="assets/images/green.png">
+      </button>
+    
+      <button class="btn" id="crys3">
+        <img src="assets/images/pink.png">
+      </button>
+    
+      <button class="btn" id="crys4">
+        <img src="assets/images/yellow.png">
+      </button>
     </article>
-
-    <article class="result-section"></article>
-
-    <article class="restart-section"></article>
+  
+    <article>
+      <p class="score">Your total score is:</p>
+      <p class="score" id="total-score-text">0</p>
+    </article>
     
   </section>
 
   <footer>
-    <!-- Not used -->
-  </footer>
 
+  </footer>
+  
   <!-- jQuery Library -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 

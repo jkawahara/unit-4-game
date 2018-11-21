@@ -2,183 +2,68 @@ $(document).ready(function() {
 
   // GLOBAL VARIABLES
   // =========
-  
-  // Character constructor: name, health, attack and counter attack points 
-  function Character(name) {
-    this.name = name;
-  }
-  Character.prototype.calcHP = function() {
-    var healthPoints = Math.ceil(Math.random() * 100) + 100; // Health points 101-200
-    return healthPoints;
-  };
-  Character.prototype.calcAP = function() {
-    var attackPower = Math.ceil(Math.random() * 20); // Attack points 1-20
-    return attackPower;
-  };
-  Character.prototype.calcCAP = function() {
-    var counterAttackPower = Math.ceil(Math.random() * 50); // Counter attack points 1-50
-    return counterAttackPower;
-  };
 
-  // Generate character objects using Character constructor
-  var chars = []; // Declare array for 4 characters
-  chars[0] = new Character("Han Solo");
-  chars[1] = new Character("Yoda");
-  chars[2] = new Character("Emperor Palpatine");
-  chars[3] = new Character("Darth Vader");
+  var randomNum; // Number randomly picked from 19-120
+  var totalScore; // Player's total score
+  var wonLost = ""; // Text for prior game won or last 
+  var wins = 0; // Player's total wins
+  var losses = 0; // Player's total losses
 
-  // Declare fight variables and flags
-  var baseAP;
-  var defeatedEnemies = 0;
-  var defeatedFlag = false;
-  var attackCharIndex = -1; // Declare to -1
-  var defendCharIndex = -1; // Declare to -1
-  var wonFlag = false;
-  
 
   // FUNCTIONS
   // =========
 
-  // Render start display
-  function displayStart() {
-    // Position characters in start section
-    $(".attacker-section, .enemies-section, .defender-section, .result-section, .restart-section").empty();
-    $(".attacker-section").append("<p>Your Character</p>")
-    $(".enemies-section").append("<p>Enemies Available to Attack</p>")
-    $(".defender-section").append("<p>Defender</p>")
-    for (var i = 0; i < chars.length; i++) {
-      $(".chars-section").append(`<button class="chars-btns" id="char${i + 1}-btn"></button>`);
-      $(`#char${i + 1}-btn`).append(`<p id="char${i + 1}-name">${chars[i].name}</p>`);
-      $(`#char${i + 1}-btn`).append(`<p id="char${i + 1}-hp">${chars[i].healthPoints}</p>`);
-    }
-  }
-
-  // Render attacker and enemies display
-  function displayAttacker() {
-    $(".attacker-section").append($(`.chars-section > #${$(this).attr("id")}`));
-    $(".enemies-section").append($(".chars-section > button"));
-    attackCharIndex = parseInt(this.id.charAt(4)) - 1;
-    baseAP = chars[attackCharIndex].attackPower; // Set base attack points for attacker
-  }
-
-  // Render defender display
-  function displayDefender() {
-    // If attacker selected but defender not selected and character button pressed
-    if (attackCharIndex > -1 && defendCharIndex === -1) {
-      $(".result-section").empty();
-      $(".defender-section").append($(`.enemies-section > #${$(this).attr("id")}`));
-      defendCharIndex = parseInt(this.id.charAt(4)) - 1;
-    }
-  }
-
-  // Render no enemy display
-  function displayNoEnemy() {
-    $(".result-section").empty();
-    $(".result-section").append("<p>No enemy here.</p>");
-  }
-
-  // Render fight result
-  function displayFight() {
-    $(".result-section").empty();
-
-    // Attack message and update healthpoints
-    $(".result-section").append(`<p>You attacked ${chars[defendCharIndex].name} for ${chars[attackCharIndex].attackPower} damage.</p>`);
-    $(`#char${attackCharIndex + 1}-hp`).text(chars[attackCharIndex].healthPoints); 
-
-    // Counter attack message and update healthpoints
-    $(".result-section").append(`<p>${chars[defendCharIndex].name} attacked you back for ${chars[defendCharIndex].counterAttackPower} damage.</p>`);
-    $(`#char${defendCharIndex + 1}-hp`).text(chars[defendCharIndex].healthPoints); 
-  }
-
-  // Render defender defeated
-  function displayDefenderDefeat() {
-    $(".defender-section, .result-section").empty();
-    $(".result-section").append(`<p>You have defeated ${chars[defendCharIndex].name}, you can choose to fight another enemy.</p>`);
-  }
-
-  // Render attacker defeated
-  function displayAttackerDefeated() {
-    $(".result-section").empty();
-    $(".result-section").append("<p>You have been defeated...GAME OVER!!!</p>");
-    $(".restart-section").append("<button id='restart-btn'>Restart</button");    
-  }
-
-  // Render attacker wins
-  function displayAttackerWins() {
-    $(".result-section").empty();
-    $(".result-section").append("<p>You Won!!!! GAME OVER!!!</p>");
-    $(".restart-section").append("<button id='restart-btn'>Restart</button");
+  // Update dispaly function
+  function displayUpdate() {
+    $("#random-num-text").text(randomNum);
+    $("#won-lost-text").text(wonLost);
+    $("#wins-text").text("Wins " + wins);
+    $("#losses-text").text("Losses " + losses);
+    $("#total-score-text").text(totalScore);
   }
 
   // Restart game function
-  function startGame() {
-    // Create character attributes
-    for (var i = 0; i < chars.length; i++) {
-      chars[i].healthPoints = chars[i].calcHP();
-      chars[i].attackPower= chars[i].calcAP();
-      // Check attack and counter attack points aren't the same
-      do {
-        chars[i].counterAttackPower = chars[i].calcCAP();
+  function restartGame() {
+    randomNum = (Math.ceil(Math.random() * 102)) + 18;
+    
+    // Loop to generate unique random numbers
+    var crysPointVal = []; // Array for storing 4 unique random numbers
+    while (crysPointVal.length < 4) {
+      var randomNumCrys = Math.ceil(Math.random() * 11) + 1; // Number randomly picked from 2-12 (per David's clarification, not skip 1)
+      if (crysPointVal.indexOf(randomNumCrys) > -1) {
+        continue;
       }
-      while (chars[i].attackPower === chars[i].counterAttackPower);
+      crysPointVal[crysPointVal.length] = randomNumCrys;
+      totalScore = 0;
     }
 
-    baseAP;
-    defeatedEnemies = 0;
-    defeatedFlag = false;
-    attackCharIndex = -1;
-    defendCharIndex = -1;
-    wonFlag = false;
+    // Update crystal's value from unique random numbers array
+    $("#crys1").val(crysPointVal[0]);
+    $("#crys2").val(crysPointVal[1]);
+    $("#crys3").val(crysPointVal[2]);
+    $("#crys4").val(crysPointVal[3]);
   }
 
   // MAIN CONTROLLER
-  startGame();
-  displayStart();
+  restartGame();
+  displayUpdate();
 
-  // Listen for button press to select attacker
-  $(document).on("click", ".chars-section > button", displayAttacker);
-  
-  // Listen for button press to select defender
-  $(document).on("click", ".enemies-section > button", displayDefender);
+  // Event listener
+  $(".btn").on("click", function() {
+    totalScore += parseInt($(this).attr("value"));
+    displayUpdate();
 
-  // Listen for attack button press
-  $("#attack-btn").on("click", function() {
-    // If no enemy selected and press attack button
-    if ((attackCharIndex === -1 || defendCharIndex === -1) && !wonFlag) {
-      displayNoEnemy();
-    
-    // If attacker and defender selected then fight and adjust attributes
-    } else if (attackCharIndex > -1 && defendCharIndex > -1 && defeatedEnemies < 3 && !defeatedFlag) {
-      chars[defendCharIndex].healthPoints -= chars[attackCharIndex].attackPower; // Attacker hits defender
-      if (chars[defendCharIndex].healthPoints > 0) {
-        chars[attackCharIndex].healthPoints -= chars[defendCharIndex].counterAttackPower; // Defender hits attacker
-      }
-      displayFight();
-      chars[attackCharIndex].attackPower += baseAP; // Attacker increases attack power by base attack power
-    }
-
-    // If defender health points <= 0 or attacker health points <= 0
-    if (attackCharIndex > -1 && defendCharIndex > -1 && chars[defendCharIndex].healthPoints <= 0 && chars[attackCharIndex].healthPoints > 0 && defeatedEnemies < 3 && !defeatedFlag) {
-      displayDefenderDefeat();
-      defeatedEnemies++;
-      defendCharIndex = -1;  
-    }
-      
-    if (attackCharIndex > -1 && defendCharIndex > -1 && chars[attackCharIndex].healthPoints <= 0 && defeatedEnemies < 3 && !defeatedFlag) {
-      displayAttackerDefeated();
-      defeatedFlag = true;
-    }
-    
-    // If all enemies are defeated
-    if (attackCharIndex > -1 && defeatedEnemies === 3 && !defeatedFlag && !wonFlag) {
-      displayAttackerWins();
-      wonFlag = true;
+    if (totalScore === randomNum) {
+      wins++;
+      wonLost = "You won!!";
+      restartGame();
+      displayUpdate();
+    } else if (totalScore > randomNum) {
+      losses++;
+      wonLost = "You lost!!"
+      restartGame();
+      displayUpdate();
     }
   });
 
-  // Event listener for restart button
-  $(document).on("click", "#restart-btn", function() {
-    startGame();
-    displayStart();
-  });
 });
